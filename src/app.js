@@ -4,13 +4,16 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const passport = require('passport');
 const passportGoogleOAuth2 = require('passport-google-oauth20');
+const bodyParser = require('body-parser');
+
+const User = require('./model/users');
 
 // const productRoutes = require('./routes/productRoutes');
 // const orderRoutes = require('./routes/orderRoutes');
 
 const app = express();
 app.use(cors());
-app.use(urlencoded({ extended: true, limit: '200mb'}));
+app.use(bodyParser.urlencoded({ extended: true, limit: '200mb'}));
 
 // Connect to MongoDB
 mongoose.connect('mongodb://localhost:27017/store', { useNewUrlParser: true, useUnifiedTopology: true })
@@ -19,6 +22,11 @@ mongoose.connect('mongodb://localhost:27017/store', { useNewUrlParser: true, use
 
 // Middleware
 app.use(express.json());
+
+// Initialize Passport.js
+app.use(passport.initialize());
+app.use(passport.session());
+
 
 // // Routes
 // app.use('/products', productRoutes);
@@ -50,6 +58,16 @@ passport.use(new passportGoogleOAuth2.Strategy({
       done(error, null);
   }
 }));
+
+passport.serializeUser((user, done) => {
+  done(null, user.id);
+});
+
+passport.deserializeUser((id, done) => {
+  User.findById(id, (err, user) => {
+    done(err, user);
+  });
+});
 
 // Error handling middleware
 app.use((err, req, res, next) => {
