@@ -1,8 +1,12 @@
-import cors from 'cors';
+
 const express = require('express');
 const mongoose = require('mongoose');
-const productRoutes = require('./routes/productRoutes');
-const orderRoutes = require('./routes/orderRoutes');
+const cors = require('cors');
+const passport = require('passport');
+const passportGoogleOAuth2 = require('passport-google-oauth20');
+
+// const productRoutes = require('./routes/productRoutes');
+// const orderRoutes = require('./routes/orderRoutes');
 
 const app = express();
 app.use(cors());
@@ -19,6 +23,33 @@ app.use(express.json());
 // // Routes
 // app.use('/products', productRoutes);
 // app.use('/orders', orderRoutes);
+// Passport.js setup
+
+passport.use(new passportGoogleOAuth2.Strategy({
+  clientID: 'your_client_id',
+  clientSecret: 'your_client_secret',
+  callbackURL: '/auth/callback',
+}, async (accessToken, refreshToken, profile, done) => {
+  try {
+      // Check if the user exists in your database
+      let user = await User.findOne({ googleId: profile.id });
+
+      // If user does not exist, create a new user
+      if (!user) {
+          user = await User.create({
+              googleId: profile.id,
+              displayName: profile.displayName,
+              email: profile.emails[0].value,
+              // You can store additional user information here
+          });
+      }
+
+      // Pass the user to the done callback to signal successful authentication
+      done(null, user);
+  } catch (error) {
+      done(error, null);
+  }
+}));
 
 // Error handling middleware
 app.use((err, req, res, next) => {
