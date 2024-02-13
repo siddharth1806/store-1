@@ -10,7 +10,7 @@ exports.googleCallback = (req, res, next) => {
             return next(err);
         }
         if (!user) {
-            return res.redirect('/login');
+            return res.redirect('/auth/google/login');
         }
         req.logIn(user, (err) => {
             if (err) {
@@ -23,6 +23,7 @@ exports.googleCallback = (req, res, next) => {
 
 // Logout handler
 exports.logout = (req, res) => {
-    req.logout();
-    res.redirect('/login'); 
+    req.logout( () => {
+        res.redirect('/home'); 
+    });
 };

@@ -10,14 +10,6 @@ const schema = mongoose.Schema(
             type: String,
             enum: ['ADMIN', 'STORE_OWNER', 'CUSTOMER']
         },
-        googleId: {
-            type: String,
-            required: true
-        },
-        displayName: {
-            type: String,
-            required: true
-        },
         email: {
             type: String,
             required: true
