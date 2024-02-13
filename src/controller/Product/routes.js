@@ -1,4 +1,4 @@
-import Product from '../models/Product.js'; // Assuming Product model is defined
+const Product = require('../models/Product.js');
 
 // Create a new product
 export const createProduct = async (req, res) => {

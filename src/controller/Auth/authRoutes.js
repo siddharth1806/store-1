@@ -1,4 +1,4 @@
-import passport from 'passport';
+const passport = require('passport');
 
 export const googleLogin = passport.authenticate('google', { scope: ['profile', 'email'] });
 

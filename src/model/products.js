@@ -1,5 +1,5 @@
-import mongoose from "mongoose";
-import { momentTimeStampPlugin } from "../plugin/plugin";
+const mongoose = require('mongoose');
+const { momentTimeStampPlugin } = require("../plugin/plugin.js");
 const schema = mongoose.Schema(
     {
         name: {
@@ -38,4 +38,4 @@ schema.plugin(momentTimeStampPlugin, {});
 
 const Product = mongoose.model('Product', schema);
 
-export default Product;
+module.exports = Product;

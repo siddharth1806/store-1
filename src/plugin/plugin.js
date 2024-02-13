@@ -1,6 +1,6 @@
-import moment from 'moment';
+const moment = require('moment');
 
-export const momentTimeStampPlugin = (schema) => {
+const momentTimeStampPlugin = (schema) => {
   schema.pre('save', function timeStamp(next) {
     this.updatedAt = moment.now();
     this.createdAt = moment.now();
@@ -13,3 +13,4 @@ export const momentTimeStampPlugin = (schema) => {
   });
 };
 
+module.exports = { momentTimeStampPlugin };

@@ -1,4 +1,4 @@
-import Order from '../models/Order.js'; 
+const Order = require('../models/Order.js');
 
 // Create a new order
 export const createOrder = async (req, res) => {
