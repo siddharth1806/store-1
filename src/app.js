@@ -5,20 +5,30 @@ const cors = require('cors');
 const passport = require('passport');
 const passportGoogleOAuth2 = require('passport-google-oauth20');
 const bodyParser = require('body-parser');
+const session = require('express-session');
+
 
 const User = require('./model/users');
 
-// const productRoutes = require('./routes/productRoutes');
-// const orderRoutes = require('./routes/orderRoutes');
+const productRoutes = require('./routes/productRoutes');
+const orderRoutes = require('./routes/orderRoutes');
+const authRoutes = require('./routes/authRoutes');
+const userRoutes = require('./routes/userRoutes');
+
 
 const app = express();
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true, limit: '200mb'}));
 
 // Connect to MongoDB
-mongoose.connect('mongodb://localhost:27017/store', { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect('mongodb://127.0.0.1:27017/store', { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log('Connected to MongoDB'))
   .catch(err => console.error('Failed to connect to MongoDB', err));
+
+app.use('/products', productRoutes);
+app.use('/order', orderRoutes);
+app.use('/user', userRoutes);
+app.use('/auth', authRoutes);
 
 // Middleware
 app.use(express.json());
@@ -32,10 +42,14 @@ app.use(passport.session());
 // app.use('/products', productRoutes);
 // app.use('/orders', orderRoutes);
 // Passport.js setup
-
+app.use(session({
+  secret: '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',
+  resave: false,
+  saveUninitialized: false
+}));
 passport.use(new passportGoogleOAuth2.Strategy({
-  clientID: 'your_client_id',
-  clientSecret: 'your_client_secret',
+  clientID: '788921873837-ecmml2j9giuplpm09plpuekmd1221j2j.apps.googleusercontent.com',
+  clientSecret: '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',
   callbackURL: '/auth/callback',
 }, async (accessToken, refreshToken, profile, done) => {
   try {

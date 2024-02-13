@@ -1,7 +1,7 @@
-const Order = require('../models/Order.js');
+const Order = require('../../model/orders');
 
 // Create a new order
-export const createOrder = async (req, res) => {
+exports.createOrder = async (req, res) => {
   try {
     const newOrder = await Order.create(req.body);
     res.status(201).json(newOrder);
@@ -11,7 +11,7 @@ export const createOrder = async (req, res) => {
 };
 
 // Cancel an existing order
-export const cancelOrder = async (req, res) => {
+exports.cancelOrder = async (req, res) => {
   try {
     const { orderId } = req.params;
     const updatedOrder = await Order.findByIdAndUpdate(orderId, { status: 'Cancelled' }, { new: true });
@@ -25,7 +25,7 @@ export const cancelOrder = async (req, res) => {
 };
 
 // Get all orders
-export const getAllOrders = async (req, res) => {
+exports.getAllOrders = async (req, res) => {
   try {
     const orders = await Order.find();
     res.json(orders);
@@ -35,7 +35,7 @@ export const getAllOrders = async (req, res) => {
 };
 
 // Get a single order by ID
-export const getOrderById = async (req, res) => {
+exports.getOrderById = async (req, res) => {
   try {
     const { orderId } = req.params;
     const order = await Order.findById(orderId);
@@ -49,7 +49,7 @@ export const getOrderById = async (req, res) => {
 };
 
 // Update an existing order
-export const updateOrder = async (req, res) => {
+exports.updateOrder = async (req, res) => {
   try {
     const { orderId } = req.params;
     const updatedOrder = await Order.findByIdAndUpdate(orderId, req.body, { new: true });
@@ -63,7 +63,7 @@ export const updateOrder = async (req, res) => {
 };
 
 // Delete an existing order
-export const deleteOrder = async (req, res) => {
+exports.deleteOrder = async (req, res) => {
   try {
     const { orderId } = req.params;
     const deletedOrder = await Order.findByIdAndDelete(orderId);

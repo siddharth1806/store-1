@@ -1,8 +1,10 @@
 const passport = require('passport');
 
-export const googleLogin = passport.authenticate('google', { scope: ['profile', 'email'] });
+// Google login handler
+exports.googleLogin = passport.authenticate('google', { scope: ['profile', 'email'] });
 
-export const googleCallback = (req, res, next) => {
+// Google callback handler
+exports.googleCallback = (req, res, next) => {
     passport.authenticate('google', (err, user, info) => {
         if (err) {
             return next(err);
@@ -19,7 +21,8 @@ export const googleCallback = (req, res, next) => {
     })(req, res, next);
 };
 
-export const logout = (req, res) => {
+// Logout handler
+exports.logout = (req, res) => {
     req.logout();
     res.redirect('/login'); 
 };

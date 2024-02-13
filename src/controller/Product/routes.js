@@ -1,7 +1,7 @@
-const Product = require('../models/Product.js');
+const Product = require('../../model/products');
 
 // Create a new product
-export const createProduct = async (req, res) => {
+exports.createProduct = async (req, res) => {
   try {
     const newProduct = await Product.create(req.body);
     res.status(201).json(newProduct);
@@ -11,7 +11,7 @@ export const createProduct = async (req, res) => {
 };
 
 // Get all products
-export const getAllProducts = async (req, res) => {
+exports.getAllProducts = async (req, res) => {
   try {
     const products = await Product.find();
     res.json(products);
@@ -21,7 +21,7 @@ export const getAllProducts = async (req, res) => {
 };
 
 // Get a single product by ID
-export const getProductById = async (req, res) => {
+exports.getProductById = async (req, res) => {
   try {
     const { productId } = req.params;
     const product = await Product.findById(productId);
@@ -35,7 +35,7 @@ export const getProductById = async (req, res) => {
 };
 
 // Update an existing product
-export const updateProduct = async (req, res) => {
+exports.updateProduct = async (req, res) => {
   try {
     const { productId } = req.params;
     const updatedProduct = await Product.findByIdAndUpdate(productId, req.body, { new: true });
@@ -49,7 +49,7 @@ export const updateProduct = async (req, res) => {
 };
 
 // Delete an existing product
-export const deleteProduct = async (req, res) => {
+exports.deleteProduct = async (req, res) => {
   try {
     const { productId } = req.params;
     const deletedProduct = await Product.findByIdAndDelete(productId);
